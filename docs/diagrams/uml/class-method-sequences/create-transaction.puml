@@ -1,0 +1,35 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — create_transaction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Giao dịch" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn create_transaction
+UI -> Backend: Gửi yêu cầu create_transaction
+activate Backend
+Backend -> Backend: Kiểm tra Category thuộc user
+Backend -> DB: Lấy type từ Category
+DB --> Backend: Kết quả
+Backend -> Backend: Kiểm tra amount/ngày
+Backend -> DB: Lưu Transaction và trả kết\nquả
+DB --> Backend: Kết quả
+alt Xử lý thành công
+  Backend --> UI: Transaction được commit với\nuser_id và type chính xác.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — list_conversations
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập.; 
+:Lọc theo user_id.;
+:Lấy preview message.;
+:Sắp xếp updated_at giảm dần.;
+:Trả danh sách.;
+:Kết quả\nKhông lộ hội thoại của người dùng khác.;
+stop
+@enduml

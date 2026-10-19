@@ -1,0 +1,28 @@
+@startuml
+title UC003 — SEQUENCE DIAGRAM ĐĂNG XUẤT
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+
+actor "Người sử dụng" as User
+boundary "AppShell" as Shell
+control "AuthContext" as Auth
+collections "localStorage" as Storage
+boundary "Màn hình đăng nhập" as Login
+
+User -> Shell : Chọn Đăng xuất
+Shell -> Shell : Lưu thông báo đăng xuất an toàn
+Shell -> Auth : logout()
+Auth -> Storage : Xóa access token
+Auth -> Auth : Xóa thông tin phiên đăng nhập trên thiết bị
+Auth --> Shell : Trạng thái chưa xác thực
+Shell -> Login : Điều hướng /login
+Login --> User : Hiển thị thông báo thành công
+
+note over Auth
+  Tài khoản và dữ liệu đã lưu vẫn được giữ nguyên.
+  Hiện trạng không gọi API logout phía máy chủ.
+end note
+@enduml

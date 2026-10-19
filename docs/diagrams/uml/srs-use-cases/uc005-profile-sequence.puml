@@ -1,0 +1,55 @@
+@startuml
+title UC005 — TUẦN TỰ QUẢN LÝ HỒ SƠ VÀ VÒNG ĐỜI TÀI KHOẢN
+scale 0.75
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 17
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+
+actor "Người sử dụng" as User
+boundary "ProfilePanel" as UI
+control "Auth / Account Backend" as Backend
+database "CSDL" as DB
+collections "Avatar Storage" as Storage
+
+User -> UI: Chọn thao tác UC005
+alt Cập nhật hồ sơ/avatar
+  UI -> Backend: PUT /auth/me hoặc POST/DELETE avatar
+  Backend -> Backend: Kiểm tra dữ liệu và quyền sở hữu
+  Backend -> DB: Cập nhật hồ sơ/avatar_url
+  DB --> Backend: Commit
+  Backend -> Storage: Lưu/dọn tệp nếu có
+  Backend --> UI: Hồ sơ công khai mới
+else Đổi mật khẩu
+  UI -> Backend: PUT /auth/me/password
+  Backend -> Backend: Xác minh mật khẩu hiện tại\nvà chính sách mật khẩu mới
+  Backend -> DB: Lưu password_hash mới
+  DB --> Backend: Commit
+  Backend --> UI: Thông báo thành công
+else UC005e — Xóa tài khoản
+  UI -> Backend: DELETE /auth/me\n(mật khẩu hiện tại, xác nhận)
+  Backend -> Backend: Xác thực phiên, mật khẩu\nvà "XÓA TÀI KHOẢN"
+  alt Không hợp lệ
+    Backend --> UI: 400/401; không thay đổi dữ liệu
+  else Hợp lệ
+    Backend -> DB: Hard delete dữ liệu active + User\ntrong một transaction
+    DB --> Backend: Commit
+    Backend -> Storage: Dọn avatar idempotent
+    Backend --> UI: 204 No Content
+    UI -> UI: Xóa token, cache, bản nháp
+    UI --> User: Chuyển tới xác nhận/đăng nhập
+  end
+end
+
+note over Backend, Storage
+Thiết kế mục tiêu; xóa tài khoản chưa được xác nhận đã triển khai.
+Backup hết retention trong tối đa 30 ngày.
+end note
+@enduml

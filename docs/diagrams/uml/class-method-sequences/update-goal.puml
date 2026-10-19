@@ -1,0 +1,35 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — update_goal
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Mục tiêu tiết kiệm" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn update_goal
+UI -> Backend: Gửi yêu cầu update_goal
+activate Backend
+Backend -> Backend: Kiểm tra quyền và status
+Backend -> Backend: Kiểm tra trường gửi lên
+Backend -> DB: Cập nhật
+DB --> Backend: Kết quả
+Backend -> DB: Commit và tái tính tiến độ
+DB --> Backend: Kết quả
+alt Xử lý thành công
+  Backend --> UI: Thông tin mới được lưu; lịch\nsử tiền không đổi.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

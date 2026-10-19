@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — delete_conversation
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; người dùng xác nhận.; 
+:Kiểm tra quyền sở hữu.;
+:Xóa AIMessage theo conversation_id.;
+:Xóa AIConversation.;
+:Commit.;
+:Kết quả\nConversation và messages liên quan không còn tồn tại.;
+stop
+@enduml

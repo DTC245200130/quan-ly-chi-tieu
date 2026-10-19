@@ -1,0 +1,30 @@
+schema_version: 1
+profile_version: "1.0.0"
+agent_id: requirement
+execution_mode: manual
+prompt: agents/requirement/prompt.md
+skill_mapping: agents/requirement/skill.md
+context:
+  - docs/ai-engineering/context.md
+skills:
+  primary:
+    - .agents/skills/requirements-analysis/SKILL.md
+  optional:
+    - .agents/skills/change-impact-analysis/SKILL.md
+    - .agents/skills/uml-diagrams/SKILL.md
+model:
+  id: null
+  version: null
+sampling:
+  temperature: null
+tools:
+  capabilities_required:
+    - repository_read
+    - task_scoped_checks
+  actual_versions: null
+permissions:
+  source: current_user_task
+  automatic_deployment: false
+evaluation:
+  cases: evaluations/requirement_agent/cases.json
+  rubric: docs/ai-engineering/evaluation.md

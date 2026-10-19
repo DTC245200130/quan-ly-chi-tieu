@@ -1,0 +1,35 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — complete_goal
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Mục tiêu tiết kiệm" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn complete_goal
+UI -> Backend: Gửi yêu cầu complete_goal
+activate Backend
+Backend -> Backend: Tính current_amount và kiểm\ntra đạt target
+Backend -> DB: Theo mode - giữ, tạo\nwithdraw, hoặc tạo\nTransaction chi
+DB --> Backend: Kết quả
+Backend -> Backend: Ghi completion_amount/mode
+Backend -> DB: Commit nguyên tử
+DB --> Backend: Kết quả
+alt Xử lý thành công
+  Backend --> UI: Goal completed; tiền được xử\nlý đúng mode; lỗi thì\nrollback.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

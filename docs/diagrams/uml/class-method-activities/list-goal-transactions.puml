@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — list_goal_transactions
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; goal tồn tại.; 
+:Kiểm tra goal thuộc user.;
+:Lọc theo goal_id.;
+:Sắp xếp mới nhất trước.;
+:Trả danh sách.;
+:Kết quả\nChỉ lịch sử của goal đúng quyền được trả.;
+stop
+@enduml

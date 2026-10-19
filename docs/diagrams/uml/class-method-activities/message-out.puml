@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — message_out
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nAIMessage tồn tại và thuộc conversation đúng quyền.; 
+:Đọc role/content/kỳ.;
+:Giải mã evidence_json nếu có.;
+:Chuẩn hóa dữ liệu.;
+:Trả schema response.;
+:Kết quả\nDữ liệu đầu ra đọc được; JSON lỗi được xử lý an toàn\ntheo router.;
+stop
+@enduml

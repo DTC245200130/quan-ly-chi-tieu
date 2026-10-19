@@ -1,0 +1,47 @@
+@startuml
+title PHÂN RÃ USE CASE — DASHBOARD VÀ BÁO CÁO SO SÁNH
+scale 0.8
+top to bottom direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+
+actor "Người sử dụng" as User
+rectangle "HỆ THỐNG SỔ CHI TIÊU — PHÂN TÍCH" {
+  usecase "UC010\nXem Dashboard" as UC010
+  usecase "Xem tổng quan thu chi" as D1
+  usecase "Xem chi theo danh mục" as D2
+  usecase "Xem trạng thái ngân sách" as D3
+  usecase "Xem mục tiêu và\ngiao dịch gần nhất" as D4
+  usecase "UC011\nXem báo cáo so sánh" as UC011
+  usecase "Chọn hai kỳ so sánh" as R1
+  usecase "Xem chênh lệch thu chi" as R2
+  usecase "Xem cơ cấu theo danh mục" as R3
+  usecase "Mở giao dịch đã lọc" as R4
+  D1 -[hidden]down- D2
+  D2 -[hidden]down- D3
+  D3 -[hidden]down- D4
+  R1 -[hidden]down- R2
+  R2 -[hidden]down- R3
+  R3 -[hidden]down- R4
+  D1 -|> UC010
+  D2 -|> UC010
+  D3 -|> UC010
+  D4 -|> UC010
+  R2 -|> UC011
+  R3 -|> UC011
+  R2 ..> R1 : <<include>>
+  R3 ..> R1 : <<include>>
+  R4 ..> R2 : <<extend>>\n[xem chi tiết]
+  R4 ..> R3 : <<extend>>\n[xem chi tiết]
+}
+User -- UC010
+User -- UC011
+@enduml

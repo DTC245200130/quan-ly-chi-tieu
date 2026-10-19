@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — list_budgets
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; kỳ hợp lệ.; 
+:Lọc Budget theo user và kỳ.;
+:SUM giao dịch chi theo category.;
+:Tính spent, remaining, usage và is_over.;
+:Trả kết quả.;
+:Kết quả\nDanh sách gồm dữ liệu lưu và trường tính động chính\nxác.;
+stop
+@enduml

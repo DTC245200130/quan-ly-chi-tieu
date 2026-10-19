@@ -1,0 +1,35 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — delete_item
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Mục tiêu tiết kiệm" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn delete_item
+UI -> Backend: Gửi yêu cầu delete_item
+activate Backend
+Backend -> Backend: Kiểm tra quyền goal
+Backend -> DB: Tìm item theo goal_id
+DB --> Backend: Kết quả
+Backend -> DB: Xóa và commit
+DB --> Backend: Kết quả
+Backend -> Backend: Trả GoalOut
+alt Xử lý thành công
+  Backend --> UI: Item bị xóa; SavingGoal và\nlịch sử tiền không thay đổi.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

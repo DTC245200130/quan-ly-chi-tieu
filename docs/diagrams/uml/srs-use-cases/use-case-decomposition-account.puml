@@ -1,0 +1,45 @@
+@startuml
+title PHÂN RÃ USE CASE — TÀI KHOẢN
+scale 0.65
+top to bottom direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+
+actor "Người sử dụng" as User
+actor "Resend" as Resend <<external>>
+
+rectangle "HỆ THỐNG SỔ CHI TIÊU — TÀI KHOẢN" {
+  usecase "UC001\nĐăng ký tài khoản" as UC001
+  usecase "UC002\nĐăng nhập" as UC002
+  usecase "UC003\nĐăng xuất" as UC003
+  usecase "UC004\nKhôi phục mật khẩu" as UC004
+  usecase "UC005\nQuản lý hồ sơ" as UC005
+  usecase "Xem hồ sơ" as UC005a
+  usecase "Cập nhật thông tin" as UC005b
+  usecase "Thay đổi ảnh đại diện" as UC005c
+  usecase "Đổi mật khẩu" as UC005d
+  usecase "Xóa tài khoản và\ndữ liệu cá nhân" as UC005e
+  UC004 ..> UC002 : <<extend>>\n[quên mật khẩu]
+  UC005a -|> UC005
+  UC005b -|> UC005
+  UC005c -|> UC005
+  UC005d -|> UC005
+  UC005e -|> UC005
+}
+
+User -- UC001
+User -- UC002
+User -- UC003
+User -- UC004
+User -- UC005
+Resend -- UC004 : gửi liên kết đặt lại mật khẩu
+@enduml

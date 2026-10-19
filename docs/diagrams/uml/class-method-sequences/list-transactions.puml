@@ -1,0 +1,34 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — list_transactions
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Giao dịch" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn list_transactions
+UI -> Backend: Gửi yêu cầu list_transactions
+activate Backend
+Backend -> Backend: Khởi tạo truy vấn theo\nuser_id
+Backend -> Backend: Áp dụng category/type/ngày
+Backend -> Backend: Sắp xếp
+Backend -> DB: Client lọc query theo ghi\nchú hoặc danh mục
+DB --> Backend: Kết quả
+alt Xử lý thành công
+  Backend --> UI: Chỉ giao dịch đúng quyền và\nđiều kiện được trả.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

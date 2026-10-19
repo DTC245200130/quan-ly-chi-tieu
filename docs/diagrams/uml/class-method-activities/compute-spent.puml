@@ -1,0 +1,20 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — compute_spent
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nCategory và kỳ đã xác định.; 
+:Xác định đầu/cuối tháng.;
+:Lọc Transaction expense theo user/category/ngày.;
+:SUM amount; null chuyển thành 0.;
+:Kết quả\nTrả tổng chi không âm; không ghi thêm dữ liệu.;
+stop
+@enduml

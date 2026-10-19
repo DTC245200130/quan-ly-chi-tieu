@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — complete_goal
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nGoal active, thuộc user và\ncurrent_amount≥target_amount.; 
+:Tính current_amount và kiểm tra đạt target.;
+:Theo mode - giữ, tạo withdraw, hoặc tạo Transaction\nchi.;
+:Ghi completion_amount/mode.;
+:Commit nguyên tử.;
+:Kết quả\nGoal completed; tiền được xử lý đúng mode; lỗi thì\nrollback.;
+stop
+@enduml

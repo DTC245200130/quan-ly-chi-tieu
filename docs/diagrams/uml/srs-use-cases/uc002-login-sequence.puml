@@ -1,0 +1,31 @@
+@startuml
+title UC002 — SEQUENCE DIAGRAM ĐĂNG NHẬP
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+
+actor "Người sử dụng" as User
+boundary "Giao diện đăng nhập" as UI
+control "Auth API" as API
+database "Cơ sở dữ liệu" as DB
+
+User -> UI : Nhập username/email và mật khẩu
+UI -> API : POST /auth/login
+API -> DB : Tìm User theo username/email
+DB --> API : Tài khoản hoặc không tìm thấy
+API -> API : Xác minh mật khẩu bcrypt
+alt Thông tin hợp lệ
+  API --> UI : Access token
+  UI -> UI : Lưu token
+  UI -> API : GET /auth/me
+  API -> DB : Tìm User theo token
+  DB --> API : Hồ sơ người dùng
+  API --> UI : UserOut
+  UI --> User : Mở Dashboard
+else Thông tin không hợp lệ
+  API --> UI : 401 + thông báo lỗi chung
+  UI --> User : Hiển thị lỗi, cho nhập lại
+end
+@enduml

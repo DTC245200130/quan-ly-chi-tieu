@@ -1,0 +1,20 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — delete_budget
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; Budget tồn tại.; 
+:Tìm Budget theo id+user_id.;
+:Xóa.;
+:Commit.;
+:Kết quả\nBudget bị xóa; giao dịch và Category không bị ảnh\nhưởng.;
+stop
+@enduml

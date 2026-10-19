@@ -1,0 +1,31 @@
+@startuml
+title PHÂN RÃ USE CASE — TRỢ LÝ AI
+scale 0.65
+top to bottom direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+
+actor "Người sử dụng" as User
+actor "Google Gemini" as Gemini <<external>>
+rectangle "HỆ THỐNG SỔ CHI TIÊU — TRỢ LÝ AI" {
+  usecase "UC012\nTrợ lý AI" as UC012
+  usecase "Hỏi trợ lý tài chính" as A1
+  usecase "Xem hội thoại" as A2
+  usecase "Xóa hội thoại" as A3
+  usecase "Tạo câu trả lời AI" as A4
+  A1 -|> UC012
+  A2 -|> UC012
+  A3 -|> UC012
+  A1 ..> A4 : <<include>>
+}
+User -- UC012
+Gemini -- A4 : sinh nội dung tư vấn
+@enduml

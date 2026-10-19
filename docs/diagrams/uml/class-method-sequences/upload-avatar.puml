@@ -1,0 +1,36 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — upload_avatar
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Hồ sơ" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn upload_avatar
+UI -> Backend: Gửi yêu cầu upload_avatar
+activate Backend
+Backend -> Backend: Kiểm tra MIME, chữ ký tệp và\nkích thước
+Backend -> DB: Lưu với tên ngẫu nhiên
+DB --> Backend: Kết quả
+Backend -> DB: Cập nhật avatar_url
+DB --> Backend: Kết quả
+Backend -> DB: Xóa ảnh cũ sau commit
+DB --> Backend: Kết quả
+alt Xử lý thành công
+  Backend --> UI: Ảnh mới tồn tại và URL được\nlưu; lỗi thì không thay đổi\navatar cũ.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

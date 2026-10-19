@@ -1,0 +1,141 @@
+@startuml
+title HỆ THỐNG QUẢN LÝ CHI TIÊU CÁ NHÂN CÓ TÍCH HỢP AI\nClass Diagram — As-built
+
+left to right direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam dpi 300
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "Thành phần xử lý" {
+  class AuthRouter <<module>> {
+    + register(payload: UserRegister): UserOut
+    + login(credentials: OAuth2Form): Token
+    + me(current_user: User): UserOut
+    + update_profile(payload: UserProfileUpdate): UserOut
+    + forgot_password(payload: ForgotPasswordRequest): MessageResponse
+    + reset_password(payload: ResetPasswordRequest): MessageResponse
+    + upload_avatar(file: UploadFile): UserOut
+    + delete_avatar(): UserOut
+  }
+
+}
+
+package "Thực thể ORM" {
+  class User <<entity>> {
+    + id: String {PK}
+    + username: String {unique}
+    + email: String {unique}
+    + display_name: String?
+    + password_hash: String
+    + avatar_url: String?
+    + created_at: DateTime
+    + reset_token_hash: String?
+    + reset_token_expiry: DateTime?
+  }
+
+  class Category <<entity>> {
+    + id: String {PK}
+    + user_id: String {FK}
+    + name: String
+    + type: String
+    + color: String
+    + icon: String
+  }
+
+  class Transaction <<entity>> {
+    + id: String {PK}
+    + user_id: String {FK}
+    + category_id: String {FK}
+    + amount: Numeric(14,2)
+    + type: String
+    + txn_date: Date
+    + note: String?
+  }
+
+  class Budget <<entity>> {
+    + id: String {PK}
+    + user_id: String {FK}
+    + category_id: String {FK}
+    + month: Integer
+    + year: Integer
+    + limit_amount: Numeric(14,2)
+  }
+
+  class SavingGoal <<entity>> {
+    + id: String {PK}
+    + user_id: String {FK}
+    + name: String
+    + target_amount: Numeric(14,2)
+    + deadline: Date?
+    + status: String
+    + completion_amount: Numeric(14,2)?
+    + completion_mode: String?
+  }
+
+  class GoalItem <<entity>> {
+    + id: String {PK}
+    + goal_id: String {FK}
+    + name: String
+    + cost: Numeric(14,2)
+    + is_purchased: Boolean
+  }
+
+  class GoalTransaction <<entity>> {
+    + id: String {PK}
+    + goal_id: String {FK}
+    + amount: Numeric(14,2)
+    + type: String
+    + txn_date: Date
+    + note: String?
+  }
+
+  class AIConversation <<entity>> {
+    + id: String {PK}
+    + user_id: String {FK}
+    + title: String(160)
+    + created_at: DateTime
+    + updated_at: DateTime
+  }
+
+  class AIMessage <<entity>> {
+    + id: String {PK}
+    + conversation_id: String {FK}
+    + role: String(16)
+    + content: Text
+    + context_month: Integer?
+    + context_year: Integer?
+    + evidence_json: Text?
+    + created_at: DateTime
+  }
+}
+
+AuthRouter ..> User : đọc/ghi tài khoản
+
+User "1" -- "0..*" Category : sở hữu
+User "1" -- "0..*" Transaction : sở hữu
+User "1" -- "0..*" Budget : sở hữu
+User "1" -- "0..*" SavingGoal : sở hữu
+User "1" -- "0..*" AIConversation : sở hữu
+Category "1" -- "0..*" Transaction : phân loại
+Category "1" -- "0..*" Budget : áp dụng
+SavingGoal "1" -- "0..*" GoalItem : chứa
+SavingGoal "1" -- "0..*" GoalTransaction : có lịch sử
+AIConversation "1" -- "0..*" AIMessage : chứa
+
+note right of User
+  Bản ghi User đại diện tài khoản đã đăng ký,
+  tồn tại độc lập với phiên đăng nhập.
+  Các hàm xác thực thuộc AuthRouter,
+  không phải phương thức của entity User.
+end note
+
+note bottom of AuthRouter
+  Các router tài chính, mục tiêu và trợ lý cũng chứa
+  thao tác tương ứng; lược khỏi hình để tập trung vào
+  quyết định RQ-009 và quan hệ giữa 9 entity.
+end note
+@enduml

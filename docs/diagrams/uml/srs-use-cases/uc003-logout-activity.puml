@@ -1,0 +1,20 @@
+@startuml
+title UC003 — ACTIVITY DIAGRAM ĐĂNG XUẤT
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+
+|Người sử dụng|
+start
+:Người sử dụng chọn Đăng xuất;
+|Hệ thống|
+:Ghi thông báo đăng xuất an toàn cho màn hình kế tiếp;
+:Xóa access token khỏi localStorage;
+:Xóa thông tin phiên đăng nhập trên thiết bị;
+:Giữ nguyên tài khoản và dữ liệu đã lưu;
+:Điều hướng đến màn hình Đăng nhập;
+:Hiển thị thông báo đăng xuất thành công;
+stop
+@enduml

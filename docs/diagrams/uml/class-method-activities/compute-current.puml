@@ -1,0 +1,20 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — compute_current
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nGoal tồn tại.; 
+:SUM các bản ghi deposit.;
+:SUM các bản ghi withdraw.;
+:Trả deposit−withdraw.;
+:Kết quả\nKết quả không được lưu thành cột và phản ánh toàn bộ\nlịch sử.;
+stop
+@enduml

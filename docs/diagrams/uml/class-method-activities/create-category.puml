@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — create_category
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; dữ liệu hợp lệ.; 
+:Kiểm tra type/icon.;
+:Kiểm tra name+type không trùng theo user.;
+:Gắn user_id.;
+:Commit và trả Category.;
+:Kết quả\nDanh mục mới thuộc current_user và xuất hiện trong\ndanh sách.;
+stop
+@enduml

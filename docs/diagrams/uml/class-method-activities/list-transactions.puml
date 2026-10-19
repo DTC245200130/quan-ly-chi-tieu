@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — list_transactions
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; khoảng ngày hợp lệ.; 
+:Khởi tạo truy vấn theo user_id.;
+:Áp dụng category/type/ngày.;
+:Sắp xếp.;
+:Client lọc query theo ghi chú hoặc danh mục.;
+:Kết quả\nChỉ giao dịch đúng quyền và điều kiện được trả.;
+stop
+@enduml

@@ -1,0 +1,32 @@
+schema_version: 1
+profile_version: "1.0.0"
+agent_id: design
+execution_mode: manual
+prompt: agents/design/prompt.md
+skill_mapping: agents/design/skill.md
+context:
+  - docs/ai-engineering/context.md
+skills:
+  primary:
+    - .agents/skills/architecture-design/SKILL.md
+  optional:
+    - .agents/skills/database-design/SKILL.md
+    - .agents/skills/api-design/SKILL.md
+    - .agents/skills/uml-diagrams/SKILL.md
+    - .agents/skills/change-impact-analysis/SKILL.md
+model:
+  id: null
+  version: null
+sampling:
+  temperature: null
+tools:
+  capabilities_required:
+    - repository_read
+    - task_scoped_checks
+  actual_versions: null
+permissions:
+  source: current_user_task
+  automatic_deployment: false
+evaluation:
+  cases: evaluations/design_agent/cases.json
+  rubric: docs/ai-engineering/evaluation.md

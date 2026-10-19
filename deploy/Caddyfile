@@ -1,0 +1,12 @@
+{$APP_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy web:8000
+}
+
+{$LEGACY_APP_DOMAIN} {
+    redir https://{$APP_DOMAIN}{uri} permanent
+}
+
+{$AZURE_APP_DOMAIN} {
+    redir https://{$APP_DOMAIN}{uri} permanent
+}

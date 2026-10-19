@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — update_goal
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; goal tồn tại.; 
+:Kiểm tra quyền và status.;
+:Kiểm tra trường gửi lên.;
+:Cập nhật.;
+:Commit và tái tính tiến độ.;
+:Kết quả\nThông tin mới được lưu; lịch sử tiền không đổi.;
+stop
+@enduml

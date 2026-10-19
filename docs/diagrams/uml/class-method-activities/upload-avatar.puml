@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — upload_avatar
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; tệp không rỗng.; 
+:Kiểm tra MIME, chữ ký tệp và kích thước.;
+:Lưu với tên ngẫu nhiên.;
+:Cập nhật avatar_url.;
+:Xóa ảnh cũ sau commit.;
+:Kết quả\nẢnh mới tồn tại và URL được lưu; lỗi thì không thay\nđổi avatar cũ.;
+stop
+@enduml

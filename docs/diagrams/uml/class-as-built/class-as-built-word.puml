@@ -1,0 +1,57 @@
+@startuml
+title CLASS DIAGRAM — AS-BUILT (TỔNG QUAN TRONG TÀI LIỆU)
+
+left to right direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam dpi 300
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+class AuthRouter <<module>> {
+  + register(...): UserOut
+  + login(...): Token
+  + me(...): UserOut
+  + update_profile(...): UserOut
+  + forgot_password(...): MessageResponse
+  + reset_password(...): MessageResponse
+  + upload_avatar(...): UserOut
+  + delete_avatar(...): UserOut
+}
+
+class User <<entity>> {
+  + id: String
+  + username: String
+  + email: String
+  + password_hash: String
+  + reset_token_hash: String?
+  + reset_token_expiry: DateTime?
+}
+class Category <<entity>>
+class Transaction <<entity>>
+class Budget <<entity>>
+class SavingGoal <<entity>>
+class GoalItem <<entity>>
+class GoalTransaction <<entity>>
+class AIConversation <<entity>>
+class AIMessage <<entity>>
+
+AuthRouter ..> User : đọc/ghi tài khoản
+User "1" -- "0..*" Category : sở hữu
+User "1" -- "0..*" Transaction : sở hữu
+User "1" -- "0..*" Budget : sở hữu
+User "1" -- "0..*" SavingGoal : sở hữu
+User "1" -- "0..*" AIConversation : sở hữu
+Category "1" -- "0..*" Transaction : phân loại
+Category "1" -- "0..*" Budget : áp dụng
+SavingGoal "1" -- "0..*" GoalItem : chứa
+SavingGoal "1" -- "0..*" GoalTransaction : lịch sử
+AIConversation "1" -- "0..*" AIMessage : chứa
+
+note bottom of User
+  User là tài khoản đã đăng ký và tồn tại sau đăng xuất.
+  Hàm xác thực thuộc AuthRouter, không thuộc entity User.
+end note
+@enduml

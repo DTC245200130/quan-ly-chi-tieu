@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — register
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nChưa đăng nhập; dữ liệu đầu vào hợp lệ.; 
+:Chuẩn hóa username/email.;
+:Kiểm tra trùng.;
+:Băm mật khẩu.;
+:Lưu User và trả dữ liệu công khai.;
+:Kết quả\nTài khoản được commit; password_hash tồn tại; mật khẩu\nrõ không được lưu.;
+stop
+@enduml

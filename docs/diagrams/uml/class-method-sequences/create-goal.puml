@@ -1,0 +1,34 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — create_goal
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Mục tiêu tiết kiệm" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn create_goal
+UI -> Backend: Gửi yêu cầu create_goal
+activate Backend
+Backend -> Backend: Chuẩn hóa tên
+Backend -> Backend: Kiểm tra số tiền
+Backend -> Backend: Gắn user_id và status=active
+Backend -> DB: Commit và trả GoalOut
+DB --> Backend: Kết quả
+alt Xử lý thành công
+  Backend --> UI: Mục tiêu active được tạo với\ncurrent_amount=0.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

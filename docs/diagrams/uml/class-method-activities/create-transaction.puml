@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — create_transaction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; Category tồn tại.; 
+:Kiểm tra Category thuộc user.;
+:Lấy type từ Category.;
+:Kiểm tra amount/ngày.;
+:Lưu Transaction và trả kết quả.;
+:Kết quả\nTransaction được commit với user_id và type chính xác.;
+stop
+@enduml

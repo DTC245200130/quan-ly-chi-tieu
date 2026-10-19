@@ -1,0 +1,20 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — delete_transaction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; người dùng xác nhận xóa.; 
+:Tìm theo transaction_id+user_id.;
+:Nếu tồn tại, xóa.;
+:Commit.;
+:Kết quả\nTransaction không còn tồn tại; số liệu tổng hợp thay\nđổi theo dữ liệu còn lại.;
+stop
+@enduml

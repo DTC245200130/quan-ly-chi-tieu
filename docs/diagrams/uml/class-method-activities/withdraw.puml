@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — withdraw
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nGoal active, thuộc user; current_amount đủ.; 
+:Kiểm tra goal active.;
+:Tính current_amount.;
+:Chặn nếu amount vượt current.;
+:Tạo withdraw và commit.;
+:Kết quả\nWithdraw được ghi; current_amount giảm; tiền trở lại\nsố dư khả dụng.;
+stop
+@enduml

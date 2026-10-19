@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — ask_assistant
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; câu hỏi không rỗng; conversation đúng\nquyền nếu được truyền.; 
+:Kiểm tra/khởi tạo conversation.;
+:Tạo evidence tổng hợp.;
+:Gọi Gemini với history.;
+:Nếu thành công, lưu user+assistant message và\nevidence; nếu lỗi, rollback.;
+:Kết quả\nThành công - hai message được commit và updated_at\nđổi. Lỗi AI - không lưu message mới.;
+stop
+@enduml

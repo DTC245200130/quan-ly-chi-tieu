@@ -1,0 +1,35 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — update_budget
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Ngân sách" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn update_budget
+UI -> Backend: Gửi yêu cầu update_budget
+activate Backend
+Backend -> DB: Tìm Budget theo quyền sở hữu
+DB --> Backend: Kết quả
+Backend -> Backend: Kiểm tra hạn mức
+Backend -> DB: Cập nhật và commit
+DB --> Backend: Kết quả
+Backend -> Backend: Tính lại spent/is_over
+alt Xử lý thành công
+  Backend --> UI: Hạn mức và tỷ lệ sử dụng\nphản ánh giá trị mới.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

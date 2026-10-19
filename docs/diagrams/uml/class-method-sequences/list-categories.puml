@@ -1,0 +1,36 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — list_categories
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Màn hình Danh mục" as UI
+control "Backend\n(Router + Core)" as Backend
+database "CSDL" as DB
+User -> UI: Chọn list_categories
+UI -> Backend: Gửi yêu cầu list_categories
+activate Backend
+Backend -> DB: Lấy current_user
+DB --> Backend: Kết quả
+Backend -> DB: Lọc Category theo user_id
+DB --> Backend: Kết quả
+Backend -> DB: Lọc tên ở client khi có\nquery
+DB --> Backend: Kết quả
+Backend -> Backend: Trả danh sách
+alt Xử lý thành công
+  Backend --> UI: Chỉ dữ liệu thuộc\ncurrent_user được trả.
+  UI --> User: Hiển thị kết quả
+else Dữ liệu không hợp lệ hoặc lỗi xử lý
+  Backend --> UI: Mã lỗi và thông báo phù hợp
+  UI --> User: Hiển thị lỗi, giữ dữ liệu cần thiết
+end
+deactivate Backend
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — create_budget
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; Category chi tồn tại.; 
+:Kiểm tra Category expense thuộc user.;
+:Kiểm tra chưa có Budget cùng category/kỳ.;
+:Lưu.;
+:Tính và trả dữ liệu đầu ra.;
+:Kết quả\nMột Budget duy nhất được tạo cho\ncategory/month/year/user.;
+stop
+@enduml

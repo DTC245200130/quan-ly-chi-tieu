@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — get_conversation
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; conversation thuộc current_user.; 
+:Tìm conversation theo id+user_id.;
+:Lấy messages theo thời gian.;
+:Giải mã evidence_json.;
+:Trả kết quả.;
+:Kết quả\nHội thoại đúng quyền được trả hoặc 404.;
+stop
+@enduml

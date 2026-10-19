@@ -1,0 +1,48 @@
+@startuml
+title PHÂN RÃ USE CASE — DANH MỤC VÀ GIAO DỊCH
+scale 0.8
+top to bottom direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+
+actor "Người sử dụng" as User
+rectangle "HỆ THỐNG SỔ CHI TIÊU — DANH MỤC VÀ GIAO DỊCH" {
+  usecase "UC006\nQuản lý danh mục" as UC006
+  usecase "Xem danh mục" as C1
+  usecase "Thêm danh mục" as C2
+  usecase "Sửa danh mục" as C3
+  usecase "Xóa danh mục" as C4
+  usecase "UC007\nQuản lý giao dịch" as UC007
+  usecase "Xem và lọc giao dịch" as T1
+  usecase "Thêm giao dịch" as T2
+  usecase "Sửa giao dịch" as T3
+  usecase "Xóa giao dịch" as T4
+  usecase "Chọn danh mục" as SelectCategory
+  C1 -[hidden]down- C2
+  C2 -[hidden]down- C3
+  C3 -[hidden]down- C4
+  T1 -[hidden]down- T2
+  T2 -[hidden]down- T3
+  T3 -[hidden]down- T4
+  C1 -|> UC006
+  C2 -|> UC006
+  C3 -|> UC006
+  C4 -|> UC006
+  T1 -|> UC007
+  T2 -|> UC007
+  T3 -|> UC007
+  T4 -|> UC007
+  T2 ..> SelectCategory : <<include>>
+  T3 ..> SelectCategory : <<include>>
+}
+User -- UC006
+User -- UC007
+@enduml

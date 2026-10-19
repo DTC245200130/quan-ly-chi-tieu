@@ -1,0 +1,23 @@
+# Acceptance criteria
+
+- **AC-001** (`US-001`): Given thông tin hợp lệ, when đăng ký/đăng nhập, then API trả người dùng/token; mật khẩu lưu dạng hash và request sai không lộ hash.
+- **AC-002** (`US-002`): Given hai tài khoản, when một tài khoản truy cập ID của tài khoản kia, then API trả 404/401 và không trả hay sửa dữ liệu.
+- **AC-003** (`US-003`): Given ngân sách danh mục chi trong tháng, when tổng chi vượt hạn mức, then `spent` và `is_over` phản ánh đúng tổng giao dịch.
+- **AC-004** (`US-004`): Given mục tiêu active, when nạp vượt số dư hoặc rút vượt số đã dành, then thao tác bị từ chối; lịch sử không bị thay đổi.
+- **AC-005** (`US-005`): Given dữ liệu trong hai kỳ, when xem dashboard/report, then tổng thu, chi, net và so sánh chỉ dùng dữ liệu của người dùng hiện tại.
+- **AC-006** (`US-006`): Given câu hỏi AI, when tạo prompt, then context không chứa giao dịch thô, note, identity, internal ID hoặc tên danh mục tự đặt.
+- **AC-007** (`US-006`): Given Gemini lỗi/timeout/chưa cấu hình, when gọi trợ lý, then client nhận lỗi thân thiện và không nhận khóa hay stack trace.
+- **AC-008** (`US-007`): Given frontend production build, when truy cập route SPA, then backend trả app shell; `/api/*` không bị fallback thành HTML.
+- **AC-009** (`NFR-TEST-001`): `python -m pytest -q`, frontend coverage test và frontend production build đều hoàn tất thành công.
+- **AC-010** (`US-008`): Given tài khoản đã tồn tại, when người dùng nhập username/email với cách viết hoa khác, then định danh vẫn được nhận diện đúng; đăng ký biến thể chỉ khác hoa/thường bị từ chối.
+- **AC-011** (`NFR-SEC-003`): Given access token đã hết hạn, when gọi endpoint cần xác thực, then API trả 401 và client xóa trạng thái phiên, yêu cầu đăng nhập lại.
+- **AC-012** (`US-009`, `NFR-PRIV-003`): Given người dùng đã xác thực lại, when yêu cầu xóa tài khoản và xác nhận, then tài khoản cùng dữ liệu active bị xóa, dữ liệu người khác không bị ảnh hưởng, client xóa token/cache liên quan và backup còn chứa dữ liệu đó hết retention trong tối đa 30 ngày.
+- **AC-013** (`FR-CONN-001`, `US-010`): Given web hoặc ứng dụng cài đặt mất kết nối Internet, when người dùng thực hiện chức năng cần máy chủ, then ứng dụng không ghi nhận giả rằng thao tác đã thành công, giữ dữ liệu nhập khi phù hợp và hiển thị thông báo kết nối thân thiện để thử lại.
+- **AC-014** (`NFR-TIME-001`): Given dữ liệu sát ranh giới cuối tháng, when tổng hợp kỳ, then phân kỳ theo ngày cuối tháng tại `Asia/Ho_Chi_Minh`.
+- **AC-015** (`NFR-PERF-001`): Given điều kiện vận hành và tải được Architecture Gate xác định, when thực hiện thao tác thông thường, then phản hồi hoàn tất trong dưới 10 giây.
+- **AC-016** (`NFR-DATA-002`): Given một giá trị tiền cần hiển thị hoặc kết quả phép tính nghiệp vụ, when hệ thống trả kết quả, then đơn vị là VND và giá trị được làm tròn nhất quán đến một chữ số thập phân.
+- **AC-017** (`NFR-PRIV-002`): Given dữ liệu gửi tới backend hoặc Gemini, when truyền qua mạng, then chỉ dùng HTTPS/TLS; payload Gemini không chứa trường định danh hoặc dữ liệu thô bị cấm trong `NFR-PRIV-001`.
+- **AC-018** (`FR-CAT-001`, `BR-001`): Given một category đã tồn tại, when cùng người dùng tạo category cùng loại với tên chỉ khác khoảng trắng đầu/cuối hoặc hoa/thường, then thao tác bị từ chối; tài khoản khác hoặc loại khác không bị coi là trùng.
+- **AC-019** (`FR-BUD-001`, `BR-002`): Given năm ngân sách ngoài 2000–2100, when tạo hoặc cập nhật ngân sách, then validation từ chối trước khi ghi database.
+- **AC-020** (`BR-003`): Given migration phát hiện collision hoặc duplicate trong dữ liệu cũ, when chạy upgrade, then migration dừng với báo cáo có thể xử lý và không tự thay đổi/xóa record xung đột.
+- **AC-021** (`FR-DATA-001`, `BR-004`): Given yêu cầu xóa tài khoản hợp lệ, when transaction database hoàn tất, then toàn bộ dữ liệu active thuộc tài khoản bị hard delete, dữ liệu tài khoản khác giữ nguyên và vòng đời backup không vượt 30 ngày.

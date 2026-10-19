@@ -1,0 +1,197 @@
+@startuml
+title CLASS DIAGRAM
+scale 0.52
+top to bottom direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam dpi 300
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+
+class AccountController <<control>> {
+  + register(username, email, password): User
+  + login(identifier, password): AccessToken
+  + getProfile(userId): User
+  + updateProfile(userId, data): User
+  + requestPasswordReset(email): void
+  + resetPassword(token, newPassword): void
+  + updateAvatar(userId, file): User
+  + deleteAvatar(userId): User
+  + deleteAccount(userId, currentPassword, confirmation): void
+}
+
+class FinancialController <<control>> {
+  + listCategories(userId): List<Category>
+  + createCategory(userId, data): Category
+  + updateCategory(userId, categoryId, data): Category
+  + deleteCategory(userId, categoryId): void
+  + listTransactions(userId, filters): List<Transaction>
+  + createTransaction(userId, data): Transaction
+  + updateTransaction(userId, transactionId, data): Transaction
+  + deleteTransaction(userId, transactionId): void
+  + listBudgets(userId, period): List<Budget>
+  + createBudget(userId, data): Budget
+  + updateBudget(userId, budgetId, data): Budget
+  + deleteBudget(userId, budgetId): void
+}
+
+class GoalController <<control>> {
+  + listGoals(userId): List<SavingGoal>
+  + createGoal(userId, data): SavingGoal
+  + getGoalDetail(userId, goalId): SavingGoal
+  + updateGoal(userId, goalId, data): SavingGoal
+  + deleteGoal(userId, goalId): void
+  + addItem(userId, goalId, data): GoalItem
+  + updateItem(userId, goalId, itemId, data): GoalItem
+  + deleteItem(userId, goalId, itemId): void
+  + deposit(userId, goalId, amount): GoalTransaction
+  + withdraw(userId, goalId, amount): GoalTransaction
+  + completeGoal(userId, goalId, mode): SavingGoal
+}
+
+class AnalysisController <<control>> {
+  + buildDashboard(userId, period): Dashboard
+  + comparePeriods(userId, current, previous): Report
+}
+
+class AssistantController <<control>> {
+  + listConversations(userId): List<AIConversation>
+  + getConversation(userId, conversationId): AIConversation
+  + ask(userId, question, conversationId): AIMessage
+  + deleteConversation(userId, conversationId): void
+}
+
+class User <<entity>> {
+  + id: String {PK}
+  + username: String
+  + email: String
+  + displayName: String?
+  - passwordHash: String
+  + avatarUrl: String?
+  + updateProfile(username, email, displayName): void
+  + changePassword(currentPassword, newPassword): void
+  + setAvatar(url): void
+  + removeAvatar(): void
+}
+
+class Category <<entity>> {
+  + id: String {PK}
+  + userId: String {FK}
+  + name: String
+  + type: CategoryType
+  + color: String
+  + icon: String
+  + update(name, color, icon): void
+  + canDelete(): Boolean
+}
+
+class Transaction <<entity>> {
+  + id: String {PK}
+  + userId: String {FK}
+  + categoryId: String {FK}
+  + amount: Decimal
+  + type: TransactionType
+  + transactionDate: Date
+  + note: String?
+  + update(category, amount, date, note): void
+  + validate(): Boolean
+}
+
+class Budget <<entity>> {
+  + id: String {PK}
+  + userId: String {FK}
+  + categoryId: String {FK}
+  + month: Integer
+  + year: Integer
+  + limitAmount: Decimal
+  + updateLimit(amount): void
+  + computeSpent(transactions): Decimal
+  + remaining(transactions): Decimal
+  + isOver(transactions): Boolean
+}
+
+class SavingGoal <<entity>> {
+  + id: String {PK}
+  + userId: String {FK}
+  + name: String
+  + targetAmount: Decimal
+  + deadline: Date?
+  + status: GoalStatus
+  + update(name, targetAmount, deadline): void
+  + currentAmount(): Decimal
+  + complete(mode): void
+}
+
+class GoalItem <<entity>> {
+  + id: String {PK}
+  + goalId: String {FK}
+  + name: String
+  + cost: Decimal
+  + isPurchased: Boolean
+  + update(name, cost, isPurchased): void
+}
+
+class GoalTransaction <<entity>> {
+  + id: String {PK}
+  + goalId: String {FK}
+  + amount: Decimal
+  + type: GoalTransactionType
+  + transactionDate: Date
+  + note: String?
+  + signedAmount(): Decimal
+}
+
+class AIConversation <<entity>> {
+  + id: String {PK}
+  + userId: String {FK}
+  + title: String
+  + createdAt: DateTime
+  + updatedAt: DateTime
+  + addMessage(message): void
+  + deleteMessages(): void
+  + latestPreview(): String
+}
+
+class AIMessage <<entity>> {
+  + id: String {PK}
+  + conversationId: String {FK}
+  + role: MessageRole
+  + content: Text
+  + contextMonth: Integer?
+  + contextYear: Integer?
+  + evidence: Evidence?
+  + toOutput(): MessageOutput
+}
+
+AccountController ..> User
+FinancialController ..> Category
+FinancialController ..> Transaction
+FinancialController ..> Budget
+GoalController ..> SavingGoal
+GoalController ..> GoalItem
+GoalController ..> GoalTransaction
+AnalysisController ..> Transaction
+AnalysisController ..> Budget
+AnalysisController ..> SavingGoal
+AssistantController ..> AIConversation
+AssistantController ..> AIMessage
+AssistantController ..> AnalysisController
+
+User "1" *-- "0..*" Category : sở hữu
+User "1" *-- "0..*" Transaction : sở hữu
+User "1" *-- "0..*" Budget : sở hữu
+User "1" *-- "0..*" SavingGoal : sở hữu
+User "1" *-- "0..*" AIConversation : sở hữu
+Category "1" -- "0..*" Transaction : phân loại
+Category "1" -- "0..*" Budget : áp dụng
+SavingGoal "1" *-- "0..*" GoalItem : gồm
+SavingGoal "1" *-- "0..*" GoalTransaction : lịch sử
+AIConversation "1" *-- "0..*" AIMessage : gồm
+@enduml

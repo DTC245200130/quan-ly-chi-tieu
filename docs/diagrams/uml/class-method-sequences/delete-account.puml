@@ -1,0 +1,42 @@
+@startuml
+title BIỂU ĐỒ TUẦN TỰ — delete_account (THIẾT KẾ MỤC TIÊU)
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 24
+skinparam dpi 300
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #345B52
+  LifeLineBorderColor #299D78
+  ParticipantBorderColor #299D78
+  ParticipantBackgroundColor #F4FBF8
+}
+actor "Người sử dụng" as User
+boundary "Xóa tài khoản" as UI
+control "Backend" as Backend
+database "CSDL" as DB
+
+User -> UI: Nhập mật khẩu hiện tại và\nxác nhận "XÓA TÀI KHOẢN"
+UI -> Backend: DELETE /auth/me\n(mật khẩu, xác nhận)
+activate Backend
+Backend -> Backend: Xác thực phiên, mật khẩu\nvà chuỗi xác nhận
+alt Xác thực không hợp lệ
+  Backend --> UI: 400/401, không thay đổi dữ liệu
+  UI --> User: Hiển thị lỗi, vẫn giữ phiên
+else Xác thực hợp lệ
+  Backend -> DB: Mở transaction,\nkhóa User hiện tại
+  Backend -> DB: Xóa dữ liệu active\nđúng tài khoản
+  Backend -> DB: Xóa User và commit
+  DB --> Backend: Thành công
+  Backend -> Backend: Xóa avatar idempotent sau commit
+  Backend --> UI: 204 No Content
+  UI -> UI: Xóa token, cache và bản nháp
+  UI --> User: Chuyển tới xác nhận/đăng nhập
+end
+deactivate Backend
+
+note over Backend, DB
+Thiết kế mục tiêu, chưa triển khai.
+Backup hết retention trong tối đa 30 ngày.
+end note
+@enduml

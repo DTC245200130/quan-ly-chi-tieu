@@ -1,0 +1,26 @@
+@startuml
+title UC002 — ACTIVITY DIAGRAM ĐĂNG NHẬP
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+
+|Người sử dụng|
+start
+:Mở màn hình đăng nhập;
+:Nhập username/email và mật khẩu;
+:Gửi yêu cầu đăng nhập;
+|Hệ thống|
+if (Thông tin xác thực hợp lệ?) then (Có)
+  :Nhận access token;
+  :Lưu token tại client;
+  :Tải hồ sơ người dùng hiện tại;
+  :Chuyển đến Dashboard;
+else (Không)
+  :Hiển thị thông báo lỗi chung;
+  |Người sử dụng|
+  :Giữ biểu mẫu để nhập lại;
+endif
+stop
+@enduml

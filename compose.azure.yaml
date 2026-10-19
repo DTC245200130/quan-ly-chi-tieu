@@ -1,0 +1,46 @@
+# Run from the repository root with both Compose files (see docs/software/deployment/azure-deploy.md).
+services:
+  web:
+    environment:
+      FRONTEND_URL: https://${APP_DOMAIN:?Set APP_DOMAIN in .env}
+      TRUSTED_HOSTS: ${APP_DOMAIN},localhost,127.0.0.1
+      ENABLE_API_DOCS: "false"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  db:
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?Set APP_DOMAIN in .env}
+      LEGACY_APP_DOMAIN: ${LEGACY_APP_DOMAIN:-app.daominhtam2k6.id.vn}
+      AZURE_APP_DOMAIN: ${AZURE_APP_DOMAIN:-expense-management-ai.japaneast.cloudapp.azure.com}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  caddy_data:
+  caddy_config:

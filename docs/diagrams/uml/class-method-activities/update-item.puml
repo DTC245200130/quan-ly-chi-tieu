@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — update_item
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nGoal và Item tồn tại, đúng quan hệ.; 
+:Kiểm tra quyền goal.;
+:Tìm item trong goal.;
+:Gán trường hợp lệ.;
+:Commit.;
+:Kết quả\nItem được cập nhật; tổng cost kế hoạch phản ánh dữ\nliệu mới.;
+stop
+@enduml

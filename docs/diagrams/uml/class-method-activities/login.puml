@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — login
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nTài khoản tồn tại; client chưa có phiên hợp lệ.; 
+:Tìm User theo username, sau đó email.;
+:So khớp bcrypt.;
+:Tạo JWT chứa user id.;
+:Trả token; sai thì trả 401.;
+:Kết quả\nĐúng - token hợp lệ được trả. Sai - không tạo phiên và\ntrả thông báo lỗi.;
+stop
+@enduml

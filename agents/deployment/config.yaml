@@ -1,0 +1,30 @@
+schema_version: 1
+profile_version: "1.0.0"
+agent_id: deployment
+execution_mode: manual
+prompt: agents/deployment/prompt.md
+skill_mapping: agents/deployment/skill.md
+context:
+  - docs/ai-engineering/context.md
+skills:
+  primary:
+    - .agents/skills/deployment/SKILL.md
+  optional:
+    - .agents/skills/release-readiness/SKILL.md
+    - .agents/skills/database-migration/SKILL.md
+model:
+  id: null
+  version: null
+sampling:
+  temperature: null
+tools:
+  capabilities_required:
+    - repository_read
+    - task_scoped_checks
+  actual_versions: null
+permissions:
+  source: current_user_task
+  automatic_deployment: false
+evaluation:
+  cases: evaluations/deployment_agent/cases.json
+  rubric: docs/ai-engineering/evaluation.md

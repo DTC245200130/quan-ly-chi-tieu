@@ -1,0 +1,46 @@
+@startuml
+title UC005e — HOẠT ĐỘNG XÓA TÀI KHOẢN VÀ DỮ LIỆU CÁ NHÂN
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 20
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+  DiamondBackgroundColor #FFF3D6
+  DiamondBorderColor #C58B00
+}
+
+start
+:Người sử dụng mở vùng nguy hiểm\ntrong Quản lý hồ sơ;
+:Người sử dụng chọn Xóa tài khoản;
+:Người sử dụng nhập mật khẩu hiện tại\nvà xác nhận "XÓA TÀI KHOẢN";
+:Hệ thống xác thực phiên, mật khẩu\nvà chuỗi xác nhận;
+if (Hợp lệ?) then (Không)
+  :Hệ thống trả lỗi, giữ tài khoản và phiên;
+  :Người sử dụng sửa thông tin\nhoặc hủy thao tác;
+  stop
+else (Có)
+  :Hệ thống bắt đầu transaction\nvà khóa User hiện tại;
+  :Hệ thống hard delete dữ liệu active\nđúng tài khoản;
+  if (Xóa dữ liệu thành công?) then (Không)
+    :Hệ thống rollback toàn bộ transaction;
+    :Hệ thống không báo xóa thành công;
+    stop
+  else (Có)
+    :Hệ thống xóa User và commit;
+    :Hệ thống dọn avatar idempotent sau commit;
+    :Hệ thống trả 204 No Content;
+    :Thiết bị xóa token, cache và bản nháp;
+    :Thiết bị chuyển tới xác nhận/đăng nhập;
+    stop
+  endif
+endif
+
+legend bottom
+  Thiết kế mục tiêu, chưa phải bằng chứng implementation.
+  Backup hết retention trong tối đa 30 ngày.
+endlegend
+@enduml

@@ -1,0 +1,41 @@
+operation	slug	interface	steps
+register	register	Màn hình Đăng ký	4
+login	login	Màn hình Đăng nhập	5
+get_profile	get-profile	Màn hình Hồ sơ	3
+update_profile	update-profile	Màn hình Hồ sơ	4
+forgot_password	forgot-password	Màn hình Quên mật khẩu	5
+reset_password	reset-password	Màn hình Đặt lại mật khẩu	4
+upload_avatar	upload-avatar	Màn hình Hồ sơ	4
+delete_avatar	delete-avatar	Màn hình Hồ sơ	3
+list_categories	list-categories	Màn hình Danh mục	4
+create_category	create-category	Màn hình Danh mục	4
+update_category	update-category	Màn hình Danh mục	4
+delete_category	delete-category	Màn hình Danh mục	4
+list_transactions	list-transactions	Màn hình Giao dịch	4
+create_transaction	create-transaction	Màn hình Giao dịch	4
+update_transaction	update-transaction	Màn hình Giao dịch	4
+delete_transaction	delete-transaction	Màn hình Giao dịch	3
+list_budgets	list-budgets	Màn hình Ngân sách	4
+create_budget	create-budget	Màn hình Ngân sách	4
+update_budget	update-budget	Màn hình Ngân sách	4
+delete_budget	delete-budget	Màn hình Ngân sách	3
+compute_spent	compute-spent	Màn hình Ngân sách	4
+list_goals	list-goals	Màn hình Mục tiêu tiết kiệm	4
+create_goal	create-goal	Màn hình Mục tiêu tiết kiệm	4
+get_goal_detail	get-goal-detail	Màn hình Mục tiêu tiết kiệm	4
+update_goal	update-goal	Màn hình Mục tiêu tiết kiệm	4
+delete_goal	delete-goal	Màn hình Mục tiêu tiết kiệm	4
+complete_goal	complete-goal	Màn hình Mục tiêu tiết kiệm	4
+add_item	add-item	Màn hình Mục tiêu tiết kiệm	4
+update_item	update-item	Màn hình Mục tiêu tiết kiệm	4
+delete_item	delete-item	Màn hình Mục tiêu tiết kiệm	4
+list_goal_transactions	list-goal-transactions	Màn hình Mục tiêu tiết kiệm	4
+deposit	deposit	Màn hình Mục tiêu tiết kiệm	4
+withdraw	withdraw	Màn hình Mục tiêu tiết kiệm	4
+compute_current	compute-current	Màn hình Mục tiêu tiết kiệm	3
+list_conversations	list-conversations	Màn hình Trợ lý AI	4
+get_conversation	get-conversation	Màn hình Trợ lý AI	4
+create_conversation	create-conversation	Màn hình Trợ lý AI	4
+delete_conversation	delete-conversation	Màn hình Trợ lý AI	4
+ask_assistant	ask-assistant	Màn hình Trợ lý AI	5
+message_out	message-out	Màn hình Trợ lý AI	4

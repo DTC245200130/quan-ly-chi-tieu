@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — delete_goal
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; người dùng xác nhận.; 
+:Kiểm tra quyền.;
+:Đếm GoalTransaction.;
+:Có lịch sử thì chặn.;
+:Nếu không, xóa GoalItem rồi SavingGoal và commit.;
+:Kết quả\nThành công - goal/items bị xóa. Thất bại - toàn bộ dữ\nliệu giữ nguyên.;
+stop
+@enduml

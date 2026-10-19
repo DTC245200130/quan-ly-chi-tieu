@@ -1,0 +1,52 @@
+@startuml
+title PHÂN RÃ USE CASE — NGÂN SÁCH VÀ MỤC TIÊU TIẾT KIỆM
+scale 0.8
+top to bottom direction
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+
+actor "Người sử dụng" as User
+rectangle "HỆ THỐNG SỔ CHI TIÊU — NGÂN SÁCH VÀ MỤC TIÊU" {
+  usecase "UC008\nQuản lý ngân sách" as UC008
+  usecase "Xem ngân sách theo kỳ" as B1
+  usecase "Tạo ngân sách" as B2
+  usecase "Sửa ngân sách" as B3
+  usecase "Xóa ngân sách" as B4
+  usecase "UC009\nQuản lý mục tiêu tiết kiệm" as UC009
+  usecase "Tạo mục tiêu" as G1
+  usecase "Sửa mục tiêu" as G2
+  usecase "Xóa mục tiêu" as G3
+  usecase "Nạp hoặc rút tiền" as G4
+  usecase "Xem lịch sử đóng góp" as G5
+  usecase "Hoàn thành mục tiêu" as G6
+  B1 -[hidden]down- B2
+  B2 -[hidden]down- B3
+  B3 -[hidden]down- B4
+  G1 -[hidden]down- G2
+  G2 -[hidden]down- G3
+  G3 -[hidden]down- G4
+  G4 -[hidden]down- G5
+  G5 -[hidden]down- G6
+  B1 -|> UC008
+  B2 -|> UC008
+  B3 -|> UC008
+  B4 -|> UC008
+  G1 -|> UC009
+  G2 -|> UC009
+  G3 -|> UC009
+  G4 -|> UC009
+  G5 -|> UC009
+  G6 -|> UC009
+  G5 ..> G4 : <<extend>>\n[xem sau khi cập nhật]
+}
+User -- UC008
+User -- UC009
+@enduml

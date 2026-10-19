@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — deposit
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nGoal active, thuộc user; amount hợp lệ.; 
+:Kiểm tra goal active.;
+:Tính available_balance.;
+:Chặn nếu amount vượt số dư.;
+:Tạo deposit và commit.;
+:Kết quả\nDeposit được ghi; current_amount tăng đúng amount; lỗi\nthì không ghi.;
+stop
+@enduml

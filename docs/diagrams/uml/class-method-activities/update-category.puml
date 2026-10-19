@@ -1,0 +1,21 @@
+@startuml
+title BIỂU ĐỒ HOẠT ĐỘNG — update_category
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam dpi 300
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F4FBF8
+  BorderColor #299D78
+  ArrowColor #345B52
+}
+start
+:Điều kiện bắt đầu\nĐã đăng nhập; Category thuộc current_user.; 
+:Tìm Category theo id+user_id.;
+:Kiểm tra dữ liệu và trùng tên.;
+:Gán trường được gửi.;
+:Commit.;
+:Kết quả\nCategory được cập nhật; các quan hệ được giữ nguyên.;
+stop
+@enduml
