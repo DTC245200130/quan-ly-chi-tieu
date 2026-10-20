@@ -249,3 +249,22 @@ Kiểm tra migration độc lập:
 | `RESEND_FROM_EMAIL` | Cho email | Địa chỉ người gửi đã xác minh |
 
 Không commit `.env`, `.env.desktop`, database, uploads hoặc chứng thư ký số.
+
+## Chạy với Nginx và pgAdmin
+
+Chuẩn bị `.env` theo `.env.example`, bổ sung:
+PGADMIN_DEFAULT_EMAIL và PGADMIN_DEFAULT_PASSWORD bằng giá trị riêng.
+
+Khởi động:
+
+```bash
+sudo docker compose -f compose.yaml -f compose.pgadmin.yaml -f compose.nginx.yaml up -d --build
+```
+
+Truy cập trong Ubuntu:
+
+- Web qua Nginx: http://localhost:8088
+- pgAdmin: http://localhost:5050
+
+Nginx chuyển tiếp đến web:8000 và bổ sung security headers.
+Phương án hiện tại dùng HTTP, chưa bật HTTPS.
