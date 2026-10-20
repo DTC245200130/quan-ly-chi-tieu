@@ -328,3 +328,53 @@ Các truy vấn CPU/RAM lọc project Docker Compose là expense.
 Prometheus lưu dữ liệu tối đa theo cấu hình retention 2 ngày/512 MB.
 cAdvisor dùng privileged và các mount máy chủ phục vụ môi trường lab;
 không công bố cổng cAdvisor hoặc exporter ra ngoài.
+
+## Mốc 3: Log tập trung Loki + Promtail
+
+Promtail thu thập log các service web, nginx và db thuộc project expense.
+Loki lưu trữ log; Grafana truy vấn qua datasource Loki-Expense.
+Loki được truy cập từ máy chủ tại http://localhost:3101.
+Grafana được truy cập tại http://localhost:3001.
+
+Khởi động toàn bộ hệ thống:
+
+```bash
+sudo docker compose \
+  -f compose.yaml \
+  -f compose.pgadmin.yaml \
+  -f compose.nginx.yaml \
+  -f compose.monitoring.yaml \
+  -f compose.logging.yaml \
+  up -d --pull never
+```
+
+Các image Loki 3.7.8 và Promtail 3.6.8 phải có sẵn nếu dùng --pull never.
+
+Kiểm tra Loki:
+
+```bash
+curl -i http://127.0.0.1:3101/ready
+```
+
+Trong Grafana Explore, chọn Loki-Expense và chạy lần lượt:
+
+```logql
+{project="expense", service="nginx"}
+```
+
+```logql
+{project="expense", service="web"}
+```
+
+```logql
+{project="expense", service="db"} |= "division by zero"
+```
+
+Tạo log lỗi thử nghiệm PostgreSQL, không thay đổi dữ liệu:
+
+```bash
+sudo docker exec expense-db-1 \
+  psql -U expense -d expense -c 'SELECT 1 / 0;'
+```
+
+Lưu ý: Promtail đã hết vòng đời hỗ trợ; sử dụng theo yêu cầu bài thực hành.
