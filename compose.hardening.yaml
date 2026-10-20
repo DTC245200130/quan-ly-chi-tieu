@@ -1,0 +1,85 @@
+services:
+  web:
+    user: "1000:1000"
+
+    environment:
+      DATABASE_URL: ${APP_DATABASE_URL:?Set APP_DATABASE_URL in .env}
+
+    entrypoint: ["uvicorn"]
+    command:
+      - app.main:app
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8000"
+      - --proxy-headers
+      - --forwarded-allow-ips
+      - "172.29.0.0/16"
+
+    cap_drop:
+      - ALL
+
+    security_opt:
+      - no-new-privileges:true
+
+    networks:
+      - frontend
+      - backend
+
+  nginx:
+    networks:
+      - frontend
+      - monitoring
+
+  db:
+    networks:
+      - backend
+
+  pgadmin:
+    networks:
+      - backend
+      - monitoring
+
+  postgres-exporter:
+    networks:
+      - backend
+      - monitoring
+
+  nginx-exporter:
+    networks:
+      - monitoring
+
+  cadvisor:
+    networks:
+      - monitoring
+
+  prometheus:
+    networks:
+      - monitoring
+
+  grafana:
+    networks:
+      - monitoring
+      - logging
+
+  loki:
+    networks:
+      - logging
+
+  promtail:
+    networks:
+      - logging
+
+networks:
+  frontend:
+    driver: bridge
+
+  backend:
+    driver: bridge
+    internal: true
+
+  monitoring:
+    driver: bridge
+
+  logging:
+    driver: bridge

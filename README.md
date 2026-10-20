@@ -378,3 +378,52 @@ sudo docker exec expense-db-1 \
 ```
 
 Lưu ý: Promtail đã hết vòng đời hỗ trợ; sử dụng theo yêu cầu bài thực hành.
+
+## Hardening hệ thống
+
+- Web chạy UID/GID 1000:1000, cap_drop ALL và no-new-privileges.
+- Web dùng tài khoản expense_app, không dùng tài khoản superuser.
+- expense là bootstrap superuser, giữ riêng cho quản trị.
+- expense_app được cấp CONNECT database, USAGE schema,
+  SELECT/INSERT/UPDATE/DELETE trên bảng và USAGE/SELECT trên sequence.
+- Tạo tài khoản và cấp quyền trước khi bật cấu hình hardening;
+  đặt mật khẩu riêng bằng lệnh \password trong psql.
+- APP_DATABASE_URL trong .env dùng mật khẩu expense_app đã URL-encode.
+- Không commit .env, mật khẩu hoặc bản sao lưu database.
+
+Tách bốn mạng: frontend, backend, monitoring và logging.
+Backend dùng internal: true. Kiểm tra cho thấy container chỉ thuộc
+frontend không kết nối trực tiếp được PostgreSQL, trong khi web
+vẫn đọc được dữ liệu bằng expense_app.
+
+Các cổng công bố chỉ bind 127.0.0.1; PostgreSQL không publish ra host.
+Nginx có security headers. Uvicorn tin cậy proxy trong subnet frontend
+172.29.0.0/16 thay cho "*"; kiểm tra và cập nhật nếu subnet thay đổi.
+
+Khởi động hệ thống đã chuẩn bị database và tài khoản:
+
+```bash
+sudo docker compose \
+  -f compose.yaml \
+  -f compose.pgadmin.yaml \
+  -f compose.nginx.yaml \
+  -f compose.monitoring.yaml \
+  -f compose.logging.yaml \
+  -f compose.hardening.yaml \
+  up -d --no-build --pull never
+```
+
+Lệnh trên yêu cầu image đã có sẵn.
+Khi triển khai mới, cần tạo schema bằng migration trước,
+sau đó tạo expense_app và cấp quyền trên các bảng/sequence.
+
+Cấu hình hardening bỏ migration tự động khỏi entrypoint của web.
+Migration tương lai phải chạy riêng bằng tài khoản có quyền phù hợp,
+sau đó cập nhật quyền expense_app cho các đối tượng mới.
+
+Giới hạn của lab:
+- cAdvisor vẫn dùng privileged.
+- Promtail vẫn chạy root và truy cập Docker socket;
+  mount socket :ro không giới hạn Docker API thành chỉ đọc.
+- Chưa triển khai HTTPS.
+- Không coi toàn bộ container đã chạy non-root.
