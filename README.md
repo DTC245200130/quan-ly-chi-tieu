@@ -268,3 +268,63 @@ Truy cập trong Ubuntu:
 
 Nginx chuyển tiếp đến web:8000 và bổ sung security headers.
 Phương án hiện tại dùng HTTP, chưa bật HTTPS.
+
+## Giám sát bằng Prometheus và Grafana
+
+Các thành phần:
+- cAdvisor: CPU và RAM container.
+- Nginx exporter: trạng thái và số request Nginx.
+- PostgreSQL exporter: trạng thái và kết nối database.
+- Prometheus: thu thập metrics.
+- Grafana: hiển thị dashboard.
+
+### Chuẩn bị khi triển khai mới
+
+Trong PostgreSQL, tạo tài khoản giám sát:
+
+```sql
+CREATE ROLE expense_monitor LOGIN;
+GRANT CONNECT ON DATABASE expense TO expense_monitor;
+GRANT pg_monitor TO expense_monitor;
+```
+
+Dùng `\password expense_monitor` trong psql để đặt mật khẩu.
+Điền đúng mật khẩu này vào POSTGRES_EXPORTER_PASSWORD trong .env.
+Đặt GRAFANA_ADMIN_USER và GRAFANA_ADMIN_PASSWORD riêng.
+Không commit .env.
+
+### Khởi động
+
+```bash
+sudo docker compose \
+  -f compose.yaml \
+  -f compose.pgadmin.yaml \
+  -f compose.nginx.yaml \
+  -f compose.monitoring.yaml \
+  up -d --build
+```
+
+### Truy cập trong Ubuntu
+
+- Prometheus: http://localhost:9091
+- Grafana: http://localhost:3001
+- Web qua Nginx: http://localhost:8088
+
+Kiểm tra Prometheus Targets có đủ bốn job UP:
+prometheus, cadvisor, nginx, postgres.
+
+Datasource Prometheus-Expense được tạo tự động từ file provisioning.
+Dashboard được lưu tại:
+deploy/grafana/dashboards/expense-monitoring.json
+
+Khi triển khai Grafana mới, dùng chức năng Import dashboard để nhập
+file JSON trên và sử dụng datasource Prometheus-Expense.
+File dashboard hiện được lưu để nhập thủ công, chưa tự động provision.
+
+Dashboard gồm sáu panel: RAM, CPU, trạng thái Nginx,
+request Nginx, trạng thái PostgreSQL và số kết nối database expense.
+Các truy vấn CPU/RAM lọc project Docker Compose là expense.
+
+Prometheus lưu dữ liệu tối đa theo cấu hình retention 2 ngày/512 MB.
+cAdvisor dùng privileged và các mount máy chủ phục vụ môi trường lab;
+không công bố cổng cAdvisor hoặc exporter ra ngoài.
